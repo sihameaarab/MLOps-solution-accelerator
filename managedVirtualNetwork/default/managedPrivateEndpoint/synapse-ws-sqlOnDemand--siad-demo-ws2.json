@@ -1,0 +1,10 @@
+{
+	"name": "synapse-ws-sqlOnDemand--siad-demo-ws2",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/85715743-6996-454c-9b4b-9664cf411041/resourceGroups/siad-demo-rg/providers/Microsoft.Synapse/workspaces/siad-demo-ws2",
+		"groupId": "sqlOnDemand",
+		"fqdns": [
+			"siad-demo-ws2-ondemand.68e1e751-7405-4a8f-83bd-9864f336a1f8.sql.azuresynapse.net"
+		]
+	}
+}

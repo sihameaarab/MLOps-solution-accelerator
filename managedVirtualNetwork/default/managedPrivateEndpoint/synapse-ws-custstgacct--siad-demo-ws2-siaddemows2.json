@@ -1,0 +1,10 @@
+{
+	"name": "synapse-ws-custstgacct--siad-demo-ws2-siaddemows2",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/85715743-6996-454c-9b4b-9664cf411041/resourceGroups/siad-demo-rg/providers/Microsoft.Storage/storageAccounts/siaddemows2",
+		"groupId": "dfs",
+		"fqdns": [
+			"siaddemows2.dfs.core.windows.net"
+		]
+	}
+}
