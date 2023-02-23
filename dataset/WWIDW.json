@@ -1,0 +1,12 @@
+{
+	"name": "WWIDW",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "onprem",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": []
+	}
+}
