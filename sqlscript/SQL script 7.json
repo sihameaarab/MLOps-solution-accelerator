@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 7",
+	"properties": {
+		"content": {
+			"query": "IF (NOT EXISTS(SELECT * FROM sys.credentials WHERE name = 'cdb-synapse-link2'))\n    THROW 50000, 'As a prerequisite, create a credential with Azure Cosmos DB key in SECRET option:\n    CREATE CREDENTIAL [cdb-synapse-link2]\n    WITH IDENTITY = ''SHARED ACCESS SIGNATURE'', SECRET = ''<Enter your Azure Cosmos DB key here>''', 0\nGO\n\nSELECT TOP 100 *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB',\n                CONNECTION = 'Account=cdb-synapse-link2;Database=RetailSalesDemoDB',\n                OBJECT = 'StoreDemoGraphics',\n                SERVER_CREDENTIAL = 'cdb-synapse-link2'\n) AS [StoreDemoGraphics]\n\n\nCREATE database RetailCosmosDB\n\nCREATE VIEW StoreDemoGraphics\nas\nSELECT *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB',\n                CONNECTION = 'Account=cdb-synapse-link2;Database=RetailSalesDemoDB',\n                OBJECT = 'StoreDemoGraphics',\n                SERVER_CREDENTIAL = 'cdb-synapse-link2'\n) AS [StoreDemoGraphics]\n\n\nCREATE VIEW RetailSales\nas\nSELECT *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB',\n                CONNECTION = 'Account=cdb-synapse-link2;Database=RetailSalesDemoDB',\n                OBJECT = 'RetailSales',\n                SERVER_CREDENTIAL = 'cdb-synapse-link2'\n) AS q1\n\n\n\nCREATE VIEW Products\nas\nSELECT *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB',\n                CONNECTION = 'Account=cdb-synapse-link2;Database=RetailSalesDemoDB',\n                OBJECT = 'Products',\n                SERVER_CREDENTIAL = 'cdb-synapse-link2'\n) AS [Products]\n\n\nSelect\nsum(p.[quantity]) as [sum quantity]\n,p.[advertising]\n,p.[storeId]\n,p.[weekStarting]\n,q.[largeHH]\nFROM [dbo].[RetailSales] as p\nINNER JOIN [dbo].[StoreDemoGraphics] as q ON q.[storeId] = p.[storeId]\nGROUP BY p.[advertising], p.[storeId], p.[weekStarting], q.[largeHH]\n\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "RetailCosmosDB",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

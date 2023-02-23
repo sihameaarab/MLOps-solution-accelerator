@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 5",
+	"properties": {
+		"content": {
+			"query": "IF (NOT EXISTS(SELECT * FROM sys.credentials WHERE name = 'cdb-synapse-link2'))\n    THROW 50000, 'As a prerequisite, create a credential with Azure Cosmos DB key in SECRET option:\n    CREATE CREDENTIAL [cdb-synapse-link2]\n    WITH IDENTITY = ''SHARED ACCESS SIGNATURE'', SECRET = ''EwM1DoepOL8XAkPhLT31zEDE55sNufb5EkPItuorDok5DKyPbKAK1S3mwO2TjVuPKjPfhZDAcZ4XACDbtNqu7Q==''', 0\nGO\n\n CREATE CREDENTIAL [cdb-synapse-link2] WITH IDENTITY = 'SHARED ACCESS SIGNATURE', SECRET = 'EwM1DoepOL8XAkPhLT31zEDE55sNufb5EkPItuorDok5DKyPbKAK1S3mwO2TjVuPKjPfhZDAcZ4XACDbtNqu7Q=='\n\n\nSELECT TOP 100 *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB',\n                CONNECTION = 'Account=cdb-synapse-link2;Database=RetailSalesDemoDB',\n                OBJECT = 'Products',\n                SERVER_CREDENTIAL = 'cdb-synapse-link2'\n) AS [Products]\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
