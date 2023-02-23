@@ -913,6 +913,66 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 5')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "IF (NOT EXISTS(SELECT * FROM sys.credentials WHERE name = 'cdb-synapse-link2'))\n    THROW 50000, 'As a prerequisite, create a credential with Azure Cosmos DB key in SECRET option:\n    CREATE CREDENTIAL [cdb-synapse-link2]\n    WITH IDENTITY = ''SHARED ACCESS SIGNATURE'', SECRET = ''EwM1DoepOL8XAkPhLT31zEDE55sNufb5EkPItuorDok5DKyPbKAK1S3mwO2TjVuPKjPfhZDAcZ4XACDbtNqu7Q==''', 0\nGO\n\n CREATE CREDENTIAL [cdb-synapse-link2] WITH IDENTITY = 'SHARED ACCESS SIGNATURE', SECRET = 'EwM1DoepOL8XAkPhLT31zEDE55sNufb5EkPItuorDok5DKyPbKAK1S3mwO2TjVuPKjPfhZDAcZ4XACDbtNqu7Q=='\n\n\nSELECT TOP 100 *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB',\n                CONNECTION = 'Account=cdb-synapse-link2;Database=RetailSalesDemoDB',\n                OBJECT = 'Products',\n                SERVER_CREDENTIAL = 'cdb-synapse-link2'\n) AS [Products]\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 6')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "IF (NOT EXISTS(SELECT * FROM sys.credentials WHERE name = 'cdb-synapse-link2'))\n    THROW 50000, 'As a prerequisite, create a credential with Azure Cosmos DB key in SECRET option:\n    CREATE CREDENTIAL [cdb-synapse-link2]\n    WITH IDENTITY = ''SHARED ACCESS SIGNATURE'', SECRET = ''<Enter your Azure Cosmos DB key here>''', 0\nGO\n\nSELECT TOP 100 *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB',\n                CONNECTION = 'Account=cdb-synapse-link2;Database=RetailSalesDemoDB',\n                OBJECT = 'RetailSales',\n                SERVER_CREDENTIAL = 'cdb-synapse-link2'\n) AS [RetailSales]\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 7')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "IF (NOT EXISTS(SELECT * FROM sys.credentials WHERE name = 'cdb-synapse-link2'))\n    THROW 50000, 'As a prerequisite, create a credential with Azure Cosmos DB key in SECRET option:\n    CREATE CREDENTIAL [cdb-synapse-link2]\n    WITH IDENTITY = ''SHARED ACCESS SIGNATURE'', SECRET = ''<Enter your Azure Cosmos DB key here>''', 0\nGO\n\nSELECT TOP 100 *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB',\n                CONNECTION = 'Account=cdb-synapse-link2;Database=RetailSalesDemoDB',\n                OBJECT = 'StoreDemoGraphics',\n                SERVER_CREDENTIAL = 'cdb-synapse-link2'\n) AS [StoreDemoGraphics]\n\n\nCREATE database RetailCosmosDB\n\nCREATE VIEW StoreDemoGraphics\nas\nSELECT *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB',\n                CONNECTION = 'Account=cdb-synapse-link2;Database=RetailSalesDemoDB',\n                OBJECT = 'StoreDemoGraphics',\n                SERVER_CREDENTIAL = 'cdb-synapse-link2'\n) AS [StoreDemoGraphics]\n\n\nCREATE VIEW RetailSales\nas\nSELECT *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB',\n                CONNECTION = 'Account=cdb-synapse-link2;Database=RetailSalesDemoDB',\n                OBJECT = 'RetailSales',\n                SERVER_CREDENTIAL = 'cdb-synapse-link2'\n) AS q1\n\n\n\nCREATE VIEW Products\nas\nSELECT *\nFROM OPENROWSET(​PROVIDER = 'CosmosDB',\n                CONNECTION = 'Account=cdb-synapse-link2;Database=RetailSalesDemoDB',\n                OBJECT = 'Products',\n                SERVER_CREDENTIAL = 'cdb-synapse-link2'\n) AS [Products]\n\n\nSelect\nsum(p.[quantity]) as [sum quantity]\n,p.[advertising]\n,p.[storeId]\n,p.[weekStarting]\n,q.[largeHH]\nFROM [dbo].[RetailSales] as p\nINNER JOIN [dbo].[StoreDemoGraphics] as q ON q.[storeId] = p.[storeId]\nGROUP BY p.[advertising], p.[storeId], p.[weekStarting], q.[largeHH]\n\n\n\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "RetailCosmosDB",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/Track Loading')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
@@ -956,7 +1016,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "62bda2d8-0c60-484a-b660-4c9ccca62c1d"
+						"spark.autotune.trackingId": "25e96d8c-492f-4778-8f1c-9dbddaf82407"
 					}
 				},
 				"metadata": {
@@ -981,15 +1041,13 @@
 						"sparkVersion": "3.3",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"dfStoreDemoGraphics = (spark\r\n",
 							"                .read\r\n",
