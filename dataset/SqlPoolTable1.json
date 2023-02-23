@@ -1,0 +1,16 @@
+{
+	"name": "SqlPoolTable1",
+	"properties": {
+		"annotations": [],
+		"type": "SqlPoolTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "Fact",
+			"table": "Order"
+		},
+		"sqlPool": {
+			"referenceName": "mysqlpool1",
+			"type": "SqlPoolReference"
+		}
+	}
+}
