@@ -5,6 +5,9 @@
 		"workspaceName": {
 			"value": "siad-demo-ws2"
 		},
+		"RetailSalesDemoDB_connectionString": {
+			"value": ""
+		},
 		"onprem_connectionString": {
 			"value": "Integrated Security=True;Data Source=.;Initial Catalog=WideWorldImportersDW"
 		},
