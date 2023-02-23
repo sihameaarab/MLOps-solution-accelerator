@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 3",
+	"properties": {
+		"content": {
+			"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseParquetFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseParquetFormat] \n\tWITH ( FORMAT_TYPE = PARQUET)\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'raw_siaddemows2_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [raw_siaddemows2_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://raw@siaddemows2.dfs.core.windows.net' \n\t)\nGO\n\nCREATE EXTERNAL TABLE dbo.Fact_Order (\n\t[OrderKey] bigint,\n\t[CityKey] int,\n\t[CustomerKey] int,\n\t[StockItemKey] int,\n\t[OrderDateKey] date,\n\t[PickedDateKey] date,\n\t[SalespersonKey] int,\n\t[PickerKey] int,\n\t[WWIOrderID] int,\n\t[WWIBackorderID] int,\n\t[Description] nvarchar(4000),\n\t[Package] nvarchar(4000),\n\t[Quantity] int,\n\t[UnitPrice] numeric(18,2),\n\t[TaxRate] numeric(18,3),\n\t[TotalExcludingTax] numeric(18,2),\n\t[TaxAmount] numeric(18,2),\n\t[TotalIncludingTax] numeric(18,2),\n\t[LineageKey] int\n\t)\n\tWITH (\n\tLOCATION = 'Fact/Order/Fact.Order.parquet',\n\tDATA_SOURCE = [raw_siaddemows2_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseParquetFormat]\n\t)\nGO\n\n\nSELECT TOP 100 * FROM dbo.Fact_Order\nGO\n\n\nSelect top 10\nBuyingGroup,\nCAST(SUM(TotalIncludingTax) as decimal(18,2)) as [(sum) TotalIncludingTax],\nCAST(AVG(TotalIncludingTax) as decimal(18,2)) as [(avg) TotalIncludingTax]\nfrom Dim_Cust C\nJoin Fact_Order O on O.CustomerKey = C.CustomerKey\nwhere BuyingGroup<>'N/A'\nGroup by Description, BuyingGroup\nORder by 3 Desc\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "demo2",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
