@@ -11,10 +11,19 @@
 		"onprem_password": {
 			"value": ""
 		},
+		"onpremise_connectionString": {
+			"value": "Integrated Security=True;Data Source=.;Initial Catalog=WideWorldImportersDW"
+		},
+		"onpremise_password": {
+			"value": ""
+		},
 		"siad-demo-ws2-WorkspaceDefaultSqlServer_connectionString": {
 			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:siad-demo-ws2.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
 		},
 		"onprem_properties_typeProperties_userName": {
+			"value": "EUROPE\\sihaarab"
+		},
+		"onpremise_properties_typeProperties_userName": {
 			"value": "EUROPE\\sihaarab"
 		},
 		"siad-demo-ws2-WorkspaceDefaultStorage_properties_typeProperties_url": {
