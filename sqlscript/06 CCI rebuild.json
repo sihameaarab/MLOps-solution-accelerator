@@ -1,0 +1,20 @@
+{
+	"name": "06 CCI rebuild",
+	"properties": {
+		"folder": {
+			"name": "Polybase script"
+		},
+		"content": {
+			"query": "-- Optimize columnstore compression\n-- By default, SQL Pool stores the table as a clustered columnstore index. \n-- After a load completes, some of the data rows might not be compressed into the columnstore.\n-- There's a variety of reasons why this can happen. To learn more, see ... .\n--\n-- To optimize query performance and columnstore compression after a load, rebuild the table to force\n-- the columnstore index to compress all the rows. \n\nSELECT GETDATE();\nGO\nALTER INDEX ALL ON [cso].[FactStrategyPlan]         REBUILD;\nALTER INDEX ALL ON [cso].[DimAccount]               REBUILD;\nALTER INDEX ALL ON [cso].[DimChannel]               REBUILD;\nALTER INDEX ALL ON [cso].[DimCurrency]              REBUILD;\nALTER INDEX ALL ON [cso].[DimCustomer]              REBUILD;\nALTER INDEX ALL ON [cso].[DimDate]                  REBUILD;\nALTER INDEX ALL ON [cso].[DimEmployee]              REBUILD;\nALTER INDEX ALL ON [cso].[DimEntity]                REBUILD;\nALTER INDEX ALL ON [cso].[DimGeography]             REBUILD;\nALTER INDEX ALL ON [cso].[DimMachine]               REBUILD;\nALTER INDEX ALL ON [cso].[DimOutage]                REBUILD;\nALTER INDEX ALL ON [cso].[DimProduct]               REBUILD;\nALTER INDEX ALL ON [cso].[DimProductCategory]       REBUILD;\nALTER INDEX ALL ON [cso].[DimScenario]              REBUILD;\nALTER INDEX ALL ON [cso].[DimPromotion]             REBUILD;\nALTER INDEX ALL ON [cso].[DimProductSubcategory]    REBUILD;\nALTER INDEX ALL ON [cso].[DimSalesTerritory]        REBUILD;\nALTER INDEX ALL ON [cso].[DimStore]                 REBUILD;\nALTER INDEX ALL ON [cso].[FactITMachine]            REBUILD;\nALTER INDEX ALL ON [cso].[FactITSLA]                REBUILD;\nALTER INDEX ALL ON [cso].[FactInventory]            REBUILD;\nALTER INDEX ALL ON [cso].[FactOnlineSales]          REBUILD;\nALTER INDEX ALL ON [cso].[FactSales]                REBUILD;\nALTER INDEX ALL ON [cso].[FactSalesQuota]           REBUILD;\nALTER INDEX ALL ON [cso].[FactExchangeRate]         REBUILD;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "mysqlpool1",
+				"poolName": "mysqlpool1"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

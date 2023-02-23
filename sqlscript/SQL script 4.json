@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 4",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP (100) [AccountKey]\n,[ParentAccountKey]\n,[AccountLabel]\n,[AccountName]\n,[AccountDescription]\n,[AccountType]\n,[Operator]\n,[CustomMembers]\n,[ValueType]\n,[CustomMemberOptions]\n,[ETLLoadID]\n,[LoadDate]\n,[UpdateDate]\n FROM [cso].[DimAccount]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "mysqlpool1",
+				"poolName": "mysqlpool1"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

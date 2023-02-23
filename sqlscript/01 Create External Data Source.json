@@ -1,0 +1,20 @@
+{
+	"name": "01 Create External Data Source",
+	"properties": {
+		"folder": {
+			"name": "Polybase script"
+		},
+		"content": {
+			"query": "CREATE EXTERNAL DATA SOURCE AzureStorage_west_public\nWITH\n(  \n    TYPE = Hadoop\n,   LOCATION = 'wasbs://contosoretaildw-tables@contosoretaildw.blob.core.windows.net/'\n);",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "mysqlpool1",
+				"poolName": "mysqlpool1"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

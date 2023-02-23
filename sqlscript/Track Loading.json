@@ -1,0 +1,20 @@
+{
+	"name": "Track Loading",
+	"properties": {
+		"folder": {
+			"name": "Polybase script"
+		},
+		"content": {
+			"query": "-- Track load Progress\n-- To see all requests\nSELECT * FROM sys.dm_pdw_exec_requests;\n\n-- To see a particular request identified by its label\nSELECT * FROM sys.dm_pdw_exec_requests as r\nWHERE \tr.label like 'CTAS%';\n\n\n-- To track bytes and files\nSELECT\n    r.command,\n    s.request_id,\n    r.status,\n    count(distinct input_name) as nbr_files,\n    sum(s.bytes_processed)/1024/1024/1024 as gb_processed\nFROM\n    sys.dm_pdw_exec_requests r\n    inner join sys.dm_pdw_dms_external_work s\n        on r.request_id = s.request_id\nWHERE\n\tr.label like 'CTAS%'\nGROUP BY\n    r.command,\n    s.request_id,\n    r.status\nORDER BY\n    nbr_files desc,\n    gb_processed desc;\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

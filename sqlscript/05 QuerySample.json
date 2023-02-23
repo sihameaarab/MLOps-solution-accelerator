@@ -1,0 +1,20 @@
+{
+	"name": "05 QuerySample",
+	"properties": {
+		"folder": {
+			"name": "Polybase script"
+		},
+		"content": {
+			"query": "--You can now start querying the tables using queries like this. :\n\nSELECT  SUM(f.[SalesAmount]) AS [sales_by_brand_amount]\n,       p.[BrandName]\nFROM    [cso].[FactOnlineSales] AS f\nJOIN    [cso].[DimProduct]      AS p ON f.[ProductKey] = p.[ProductKey]\nGROUP BY p.[BrandName]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "mysqlpool1",
+				"poolName": "mysqlpool1"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

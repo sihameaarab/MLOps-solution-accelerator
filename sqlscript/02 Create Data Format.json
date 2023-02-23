@@ -1,0 +1,20 @@
+{
+	"name": "02 Create Data Format",
+	"properties": {
+		"folder": {
+			"name": "Polybase script"
+		},
+		"content": {
+			"query": "CREATE EXTERNAL FILE FORMAT TextFileFormat\nWITH\n(   FORMAT_TYPE = DELIMITEDTEXT\n,    FORMAT_OPTIONS    (   FIELD_TERMINATOR = '|'\n                    ,    STRING_DELIMITER = ''\n                    ,    DATE_FORMAT         = 'yyyy-MM-dd HH:mm:ss.fff'\n                    ,    USE_TYPE_DEFAULT = FALSE\n                    )\n);",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "mysqlpool1",
+				"poolName": "mysqlpool1"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
