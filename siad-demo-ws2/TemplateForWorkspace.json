@@ -12,9 +12,22 @@
 			"metadata": "Secure string for 'connectionString' of 'siad-demo-ws2-WorkspaceDefaultSqlServer'",
 			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:siad-demo-ws2.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
 		},
+		"onprem_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'onprem'",
+			"defaultValue": "Integrated Security=True;Data Source=.;Initial Catalog=WideWorldImportersDW"
+		},
+		"onprem_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'onprem'"
+		},
 		"siad-demo-ws2-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://siaddemows2.dfs.core.windows.net"
+		},
+		"onprem_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "EUROPE\\sihaarab"
 		}
 	},
 	"variables": {
@@ -204,6 +217,252 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/sh-integration-runtime')]",
+			"type": "Microsoft.Synapse/workspaces/integrationRuntimes",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Pipeline 1')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlPoolSink",
+								"allowPolyBase": true,
+								"polyBaseSettings": {
+									"rejectValue": 0,
+									"rejectType": "value",
+									"useTypeDefault": true
+								},
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "siad-demo-ws2-WorkspaceDefaultStorage",
+									"type": "LinkedServiceReference"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SqlServerTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SqlPoolTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/SqlServerTable1')]",
+				"[concat(variables('workspaceId'), '/datasets/SqlPoolTable1')]",
+				"[concat(variables('workspaceId'), '/linkedServices/siad-demo-ws2-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/onprem')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('onprem_connectionString')]",
+					"userName": "[parameters('onprem_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('onprem_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "sh-integration-runtime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/sh-integration-runtime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SqlServerTable1')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "onprem",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "OrderKey",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "CityKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "CustomerKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "StockItemKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "OrderDateKey",
+						"type": "date"
+					},
+					{
+						"name": "PickedDateKey",
+						"type": "date"
+					},
+					{
+						"name": "SalespersonKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "PickerKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "WWIOrderID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "WWIBackorderID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Description",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Package",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Quantity",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "UnitPrice",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "TaxRate",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 3
+					},
+					{
+						"name": "TotalExcludingTax",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "TaxAmount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "TotalIncludingTax",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "LineageKey",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "Fact",
+					"table": "Order"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/onprem')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SqlPoolTable1')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "SqlPoolTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "Fact",
+						"type": "Expression"
+					},
+					"table": "Order"
+				},
+				"sqlPool": {
+					"referenceName": "mysqlpool1",
+					"type": "SqlPoolReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/sqlPools/mysqlpool1')]"
 			]
 		}
 	]
