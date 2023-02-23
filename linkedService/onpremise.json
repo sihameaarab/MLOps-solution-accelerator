@@ -1,0 +1,17 @@
+{
+	"name": "onpremise",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=.;initial catalog=WideWorldImportersDW",
+			"userName": "EUROPE\\sihaarab",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJjZjFkZDJlNC0yODY3LTRkMWUtODBiNy0zY2NhOWNiMWY1Y2QiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "sh-integration-runtime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
