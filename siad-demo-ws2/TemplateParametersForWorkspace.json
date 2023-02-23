@@ -5,20 +5,20 @@
 		"workspaceName": {
 			"value": "siad-demo-ws2"
 		},
-		"siad-demo-ws2-WorkspaceDefaultSqlServer_connectionString": {
-			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:siad-demo-ws2.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
-		},
 		"onprem_connectionString": {
 			"value": "Integrated Security=True;Data Source=.;Initial Catalog=WideWorldImportersDW"
 		},
 		"onprem_password": {
 			"value": ""
 		},
-		"siad-demo-ws2-WorkspaceDefaultStorage_properties_typeProperties_url": {
-			"value": "https://siaddemows2.dfs.core.windows.net"
+		"siad-demo-ws2-WorkspaceDefaultSqlServer_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:siad-demo-ws2.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
 		},
 		"onprem_properties_typeProperties_userName": {
 			"value": "EUROPE\\sihaarab"
+		},
+		"siad-demo-ws2-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://siaddemows2.dfs.core.windows.net"
 		}
 	}
 }
